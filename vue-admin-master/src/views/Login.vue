@@ -50,21 +50,29 @@
             //_this.$router.replace('/table');
             this.logining = true;
             //NProgress.start();
-            var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            requestLogin(loginParams).then(data => {
-              this.logining = false;
-              //NProgress.done();
-              let { msg, code, user } = data;
-              if (code !== 200) {
-                this.$message({
-                  message: msg,
-                  type: 'error'
-                });
-              } else {
-                sessionStorage.setItem('user', JSON.stringify(user));
-                this.$router.push({ path: '/table' });
-              }
-            });
+            var loginParams = { name: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+
+
+              // 发送登录的请求:使用功能axios发送请求
+              this.$http.post("/employee/login",loginParams).then(
+                  d => {
+                      console.debug(d);//{"data":{"msg":"TaPo((","object":{},"success":false}}
+                      this.logining = false;
+                      //NProgress.done();
+                      let { msg, success, object } = d.data;
+                      // {"msg":"TaPo((","object":{},"success":false}
+                      if (!success) {
+                          this.$message({
+                              message: msg,
+                              type: 'error'
+                          });
+                      } else {
+                          // session的设置
+                          sessionStorage.setItem('user', JSON.stringify(object));
+                          this.$router.push({ path: '/' });
+                      }
+                  }
+              );
           } else {
             console.log('error submit!!');
             return false;

@@ -11,7 +11,8 @@ import Vuex from 'vuex'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
 import Mock from './mock'
-Mock.bootstrap();
+import axios from 'axios'  // 引入axios依赖,和引入vue一样
+//Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(ElementUI)
@@ -19,6 +20,11 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 
 //NProgress.configure({ showSpinner: false });
+axios.defaults.baseURL="http://127.0.0.1:9527/wanbo/employee";
+//axios.defaults.baseURL="https://www.easy-mock.com/mock/5c7514af6ce4da08919aef1f/employee";
+
+Vue.prototype.$http = axios //原型
+Vue.config.productionTip = false
 
 const router = new VueRouter({
   routes
